@@ -25,4 +25,9 @@ export function CardContent({ className, ...props }: React.HTMLAttributes<HTMLDi
   return <div className={classes} {...props} />;
 }
 
+export function CardFooter({ className, ...props }: React.HTMLAttributes<HTMLDivElement>) {
+  const classes = ["px-4 py-3 border-t border-neutral-800", className ?? ""].join(" ");
+  return <div className={classes} {...props} />;
+}
+
 

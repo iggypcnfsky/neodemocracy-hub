@@ -3,9 +3,10 @@
 import { useState } from "react";
 import Link from "next/link";
 import { Tabs } from "../components/ui/tabs";
-import { Card, CardContent, CardHeader, CardTitle } from "../components/ui/card";
+import { Card, CardContent, CardHeader, CardTitle, CardFooter } from "../components/ui/card";
 import { Badge } from "../components/ui/badge";
 import { Button } from "../components/ui/button";
+import { GitPullRequest, MessageSquare } from "lucide-react";
 
 export default function Home() {
   const [tab, setTab] = useState("repos");
@@ -21,7 +22,7 @@ export default function Home() {
       </div>
       <Tabs
         tabs={[
-          { key: "repos", label: "Policy Libraries", count: 3 },
+          { key: "repos", label: "Policy", count: 3 },
           { key: "issues", label: "Issues", count: 12 },
           { key: "pulls", label: "Proposals", count: 5 },
           { key: "governance", label: "Governance" },
@@ -41,14 +42,30 @@ export default function Home() {
                   <Badge>public</Badge>
                 </CardTitle>
               </CardHeader>
-              <CardContent className="text-sm text-neutral-300">
-                Policy repository. Drafts and proposals welcome.
-                <div className="mt-3 flex items-center gap-3 text-neutral-400 text-xs">
-                  <span>⭐ 42</span>
-                  <span>🍴 7</span>
-                  <span>Updated 1d ago</span>
-                </div>
-              </CardContent>
+                <CardContent className="text-sm text-neutral-300 space-y-3">
+                  <div>Collaborative policy library. Drafts and proposals welcome.</div>
+                  <div className="flex items-center gap-3 text-neutral-400 text-xs">
+                    <span>⭐ 42</span>
+                    <span>🍴 7</span>
+                    <span>Updated 1d ago</span>
+                  </div>
+                  <div className="grid grid-cols-1 gap-2">
+                    <div className="flex items-center gap-2 text-neutral-200">
+                      <MessageSquare className="h-4 w-4 text-neutral-400" />
+                      <span className="text-xs">Open issues:</span>
+                      <span className="text-xs text-neutral-400">#128 Protected intersections, #129 Bus signal priority</span>
+                    </div>
+                    <div className="flex items-center gap-2 text-neutral-200">
+                      <GitPullRequest className="h-4 w-4 text-neutral-400" />
+                      <span className="text-xs">Recent proposals:</span>
+                      <span className="text-xs text-neutral-400">Night bus expansion, Bike lane buffers</span>
+                    </div>
+                  </div>
+                </CardContent>
+                <CardFooter className="flex items-center justify-between">
+                  <div className="text-xs text-neutral-400">Default branch: main</div>
+                  <Button size="sm" variant="outline">Open</Button>
+                </CardFooter>
               </Card>
             </Link>
           ))}

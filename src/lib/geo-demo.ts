@@ -221,4 +221,84 @@ export function getPolicyContext(org: string, repo: string):
   return undefined;
 }
 
+// Demo indices to resolve Issue/Proposal → Policy/City/Country
+type IssueCtx = { id: number; org: string; repo: string; citySlug?: string; countrySlug?: string };
+type ProposalCtx = { id: number; org: string; repo: string; citySlug?: string; countrySlug?: string };
+
+const issueIndex: IssueCtx[] = [
+  { id: 128, org: "SF", repo: "Transport", citySlug: "san-francisco", countrySlug: "united-states" },
+  { id: 55, org: "Germany", repo: "Transport", citySlug: "berlin", countrySlug: "germany" },
+  { id: 204, org: "India", repo: "Urban", citySlug: "mumbai", countrySlug: "india" },
+  { id: 18, org: "SF", repo: "Transport", citySlug: "san-francisco", countrySlug: "united-states" },
+  { id: 24, org: "SF", repo: "Transport", citySlug: "san-francisco", countrySlug: "united-states" },
+  { id: 12, org: "Berlin", repo: "Mobility", citySlug: "berlin", countrySlug: "germany" },
+  { id: 33, org: "Tokyo", repo: "Resilience", citySlug: "tokyo", countrySlug: "japan" },
+  { id: 71, org: "SaoPaulo", repo: "Transport", citySlug: "sao-paulo", countrySlug: "brazil" },
+  { id: 201, org: "Mumbai", repo: "Urban", citySlug: "mumbai", countrySlug: "india" },
+];
+
+const proposalIndex: ProposalCtx[] = [
+  { id: 9001, org: "SF", repo: "Transport", citySlug: "san-francisco", countrySlug: "united-states" },
+  { id: 9002, org: "Germany", repo: "Transport", citySlug: "berlin", countrySlug: "germany" },
+  { id: 9003, org: "India", repo: "Transport", citySlug: "mumbai", countrySlug: "india" },
+  { id: 9004, org: "SF", repo: "Transport", citySlug: "san-francisco", countrySlug: "united-states" },
+  { id: 9005, org: "USA", repo: "Climate", countrySlug: "united-states" },
+  { id: 9006, org: "Japan", repo: "Transport", countrySlug: "japan" },
+  { id: 9007, org: "Brazil", repo: "Housing", countrySlug: "brazil" },
+  { id: 9008, org: "Berlin", repo: "Mobility", citySlug: "berlin", countrySlug: "germany" },
+  { id: 9009, org: "Tokyo", repo: "Transport", citySlug: "tokyo", countrySlug: "japan" },
+  { id: 9010, org: "SaoPaulo", repo: "Transport", citySlug: "sao-paulo", countrySlug: "brazil" },
+  { id: 9011, org: "Mumbai", repo: "Transport", citySlug: "mumbai", countrySlug: "india" },
+];
+
+export function findIssueContext(id: number):
+  | {
+      policyPath: string;
+      countrySlug?: string;
+      countryName?: string;
+      countryFlag?: string;
+      citySlug?: string;
+      cityName?: string;
+      cityFlag?: string;
+    }
+  | undefined {
+  const entry = issueIndex.find((e) => e.id === id);
+  if (!entry) return undefined;
+  const ctx = getPolicyContext(entry.org, entry.repo);
+  return {
+    policyPath: `${entry.org}/${entry.repo}`,
+    countrySlug: ctx?.countrySlug,
+    countryName: ctx?.countryName,
+    countryFlag: ctx?.countryFlag,
+    citySlug: ctx?.citySlug,
+    cityName: ctx?.cityName,
+    cityFlag: ctx?.cityFlag,
+  };
+}
+
+export function findProposalContext(id: number):
+  | {
+      policyPath: string;
+      countrySlug?: string;
+      countryName?: string;
+      countryFlag?: string;
+      citySlug?: string;
+      cityName?: string;
+      cityFlag?: string;
+    }
+  | undefined {
+  const entry = proposalIndex.find((e) => e.id === id);
+  if (!entry) return undefined;
+  const ctx = getPolicyContext(entry.org, entry.repo);
+  return {
+    policyPath: `${entry.org}/${entry.repo}`,
+    countrySlug: ctx?.countrySlug,
+    countryName: ctx?.countryName,
+    countryFlag: ctx?.countryFlag,
+    citySlug: ctx?.citySlug,
+    cityName: ctx?.cityName,
+    cityFlag: ctx?.cityFlag,
+  };
+}
+
 

@@ -4,6 +4,7 @@ import { Badge } from "../../../components/ui/badge";
 import { Button } from "../../../components/ui/button";
 import Breadcrumbs from "../../../components/breadcrumbs";
 import Link from "next/link";
+import { findProposalContext } from "../../../lib/geo-demo";
 
 interface Props {
   params: { id: string };
@@ -12,18 +13,42 @@ interface Props {
 export default function ProposalPage({ params }: Props) {
   const id = Number(params.id);
   if (Number.isNaN(id)) return notFound();
+  const ctx = findProposalContext(id);
 
   return (
     <div className="space-y-6">
-      <Breadcrumbs items={[{ label: "Countries", href: "/" }, { label: "United States", href: "/countries/united-states", prefix: "🇺🇸" }, { label: "San Francisco", href: "/cities/san-francisco" }, { label: "Policy", href: "/libraries/SF/Transport" }, { label: `Proposal #${id}` }]} />
+      <Breadcrumbs
+        items={
+          ctx
+            ? [
+                { label: "Countries", href: "/" },
+                ...(ctx.countrySlug && ctx.countryName
+                  ? [{ label: ctx.countryName, href: `/countries/${ctx.countrySlug}`, prefix: ctx.countryFlag }]
+                  : []),
+                ...(ctx.citySlug && ctx.cityName
+                  ? [{ label: ctx.cityName, href: `/cities/${ctx.citySlug}`, prefix: ctx.cityFlag }]
+                  : []),
+                { label: "Policy", href: ctx.policyPath ? `/libraries/${ctx.policyPath}` : undefined },
+                { label: `Proposal #${id}` },
+              ]
+            : [{ label: `Proposal #${id}` }]
+        }
+      />
       <div className="flex items-start justify-between">
         <div className="space-y-1">
           <h1 className="text-xl font-semibold text-neutral-100">Proposal #{id}: Night bus routes expansion</h1>
           <div className="flex items-center gap-2 text-sm text-neutral-400">
             <Badge>review</Badge>
             <Badge variant="success">vote open</Badge>
-            <Link href="/libraries/SF/Transport" className="hover:underline underline-offset-4">SF/Transport</Link>
-            <span>San Francisco, United States</span>
+            {ctx?.policyPath ? (
+              <Link href={`/libraries/${ctx.policyPath}`} className="hover:underline underline-offset-4">{ctx.policyPath}</Link>
+            ) : null}
+            {(ctx?.cityName || ctx?.countryName) ? (
+              <span>
+                {ctx?.cityName ? `${ctx.cityName}, ` : ""}
+                {ctx?.countryName ?? ""}
+              </span>
+            ) : null}
           </div>
         </div>
         <div className="flex items-center gap-2">

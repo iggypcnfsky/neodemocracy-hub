@@ -15,7 +15,7 @@ const variantToClass: Record<BadgeVariant, string> = {
 
 export function Badge({ className, variant = "default", ...props }: BadgeProps) {
   const classes = [
-    "inline-flex items-center rounded-md px-2 py-0.5 text-[11px] font-medium",
+    "inline-flex items-center rounded-md px-2 py-0.5 text-[11px] font-medium whitespace-nowrap",
     variantToClass[variant],
     className ?? "",
   ]

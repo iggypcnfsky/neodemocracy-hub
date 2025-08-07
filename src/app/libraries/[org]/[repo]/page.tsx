@@ -1,4 +1,6 @@
 import Link from "next/link";
+import Breadcrumbs from "../../../../components/breadcrumbs";
+import { getPolicyContext } from "../../../../lib/geo-demo";
 import { Card, CardContent, CardHeader, CardTitle } from "../../../../components/ui/card";
 import { Badge } from "../../../../components/ui/badge";
 import { Button } from "../../../../components/ui/button";
@@ -10,9 +12,28 @@ interface Props {
 export default function LibraryPage({ params }: Props) {
   const { org, repo } = params;
   const fullName = `${decodeURIComponent(org)}/${decodeURIComponent(repo)}`;
+  const ctx = getPolicyContext(decodeURIComponent(org), decodeURIComponent(repo));
 
   return (
     <div className="space-y-6">
+      <Breadcrumbs
+        items={
+          ctx
+            ? [
+                { label: "Countries", href: "/" },
+                { label: ctx.countryName, href: `/countries/${ctx.countrySlug}`, prefix: ctx.countryFlag },
+                ...(ctx.citySlug
+                  ? [{ label: ctx.cityName || "", href: `/cities/${ctx.citySlug}`, prefix: ctx.cityFlag }]
+                  : []),
+                { label: "Policy" },
+                { label: fullName },
+              ]
+            : [
+                { label: "Policy" },
+                { label: fullName },
+              ]
+        }
+      />
       <div className="flex items-center justify-between">
         <div className="space-y-1">
           <div className="text-xs text-neutral-400">Policy Library</div>
@@ -29,6 +50,9 @@ export default function LibraryPage({ params }: Props) {
           </Link>
           <Link href={`/proposals/new?org=${encodeURIComponent(org)}&repo=${encodeURIComponent(repo)}`}>
             <Button>New Proposal</Button>
+          </Link>
+          <Link href={`/libraries/${encodeURIComponent(org)}/${encodeURIComponent(repo)}/editor`}>
+            <Button variant="secondary">Open Editor</Button>
           </Link>
         </div>
       </div>

@@ -2,6 +2,8 @@ import { notFound } from "next/navigation";
 import { Card, CardContent, CardHeader, CardTitle } from "../../../components/ui/card";
 import { Badge } from "../../../components/ui/badge";
 import { Button } from "../../../components/ui/button";
+import Breadcrumbs from "../../../components/breadcrumbs";
+import Link from "next/link";
 
 interface Props {
   params: { id: string };
@@ -13,13 +15,15 @@ export default function ProposalPage({ params }: Props) {
 
   return (
     <div className="space-y-6">
+      <Breadcrumbs items={[{ label: "Countries", href: "/" }, { label: "United States", href: "/countries/united-states", prefix: "🇺🇸" }, { label: "San Francisco", href: "/cities/san-francisco" }, { label: "Policy", href: "/libraries/SF/Transport" }, { label: `Proposal #${id}` }]} />
       <div className="flex items-start justify-between">
         <div className="space-y-1">
           <h1 className="text-xl font-semibold text-neutral-100">Proposal #{id}: Night bus routes expansion</h1>
           <div className="flex items-center gap-2 text-sm text-neutral-400">
             <Badge>review</Badge>
             <Badge variant="success">vote open</Badge>
-            <span>City/Transport</span>
+            <Link href="/libraries/SF/Transport" className="hover:underline underline-offset-4">SF/Transport</Link>
+            <span>San Francisco, United States</span>
           </div>
         </div>
         <div className="flex items-center gap-2">

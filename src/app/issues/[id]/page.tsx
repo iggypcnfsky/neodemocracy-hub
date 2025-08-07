@@ -2,6 +2,8 @@ import { notFound } from "next/navigation";
 import { Card, CardContent, CardHeader, CardTitle } from "../../../components/ui/card";
 import { Badge } from "../../../components/ui/badge";
 import { Button } from "../../../components/ui/button";
+import Link from "next/link";
+import Breadcrumbs from "../../../components/breadcrumbs";
 
 interface Props {
   params: { id: string };
@@ -13,12 +15,14 @@ export default function IssuePage({ params }: Props) {
 
   return (
     <div className="space-y-6">
+      <Breadcrumbs items={[{ label: "Countries", href: "/" }, { label: "United States", href: "/countries/united-states", prefix: "🇺🇸" }, { label: "San Francisco", href: "/cities/san-francisco" }, { label: "Policy", href: "/libraries/SF/Transport" }, { label: `Issue #${id}` }]} />
       <div className="flex items-start justify-between">
         <div className="space-y-1">
           <h1 className="text-xl font-semibold text-neutral-100">Issue #{id}: Improve bike lane safety downtown</h1>
           <div className="flex items-center gap-2 text-sm text-neutral-400">
             <Badge variant="outline">open</Badge>
-            <span>City/Transport</span>
+            <Link href="/libraries/SF/Transport" className="hover:underline underline-offset-4">SF/Transport</Link>
+            <span>San Francisco, United States</span>
             <span>opened by alice</span>
           </div>
         </div>

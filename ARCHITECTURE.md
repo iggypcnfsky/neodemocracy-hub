@@ -232,3 +232,19 @@ Recommend a monorepo for cohesive evolution and shared types.
 - Build repo/issue/PR flows in web app.
 - Implement GovernanceRule model and basic vote flow.
 - Integrate Meilisearch for issues/PRs search.
+
+---
+
+## Frontend Prototype Status (Implemented)
+
+- Minimal GitHub-like dark UI using shadcn-style primitives (Button, Card, Input, Tabs, Badge).
+- Top navigation with icons and a compact “Create” menu (Policy Library, Issue, Proposal).
+- Explore views with tabs:
+  - Countries (default) and Cities first; rich cards per country/city with emoji flags, citizens, policies list, issues and proposals stats, and highlights.
+  - Policy list with richer cards showing location (city, country), activity badges, and links.
+  - Issues and Proposals lists show associated Policy and location (city, country); sort toggles: Latest / Trending.
+- Policy Library page with links to open issues and proposals; “Open Editor” button.
+- Policy Editor view: left folder tree, right text editor area with commit message and Save/Discard actions.
+
+Notes:
+- Data is demo-only (static) to illustrate UX. Wiring to GraphQL/REST is a next milestone.

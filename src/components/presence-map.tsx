@@ -42,7 +42,13 @@ const coords: Record<string, { lat: number; lon: number }> = {
 
 import { useEffect, useRef } from "react";
 
-export default function PresenceMap() {
+export interface PresenceMapProps {
+  centerSlug?: string;
+  zoom?: number;
+  onlySlugs?: string[];
+}
+
+export default function PresenceMap({ centerSlug, zoom, onlySlugs }: PresenceMapProps = {}) {
   const mapRef = useRef<LeafletMap | null>(null);
 
   useEffect(() => {
@@ -60,7 +66,11 @@ export default function PresenceMap() {
       if (!isMounted) return;
       const container = document.getElementById("nd-map");
       if (!container) return;
-      const map = new L.Map(container).setView([20, 0], 2);
+      const defaultCenter: [number, number] = [20, 0];
+      const defaultZoom = 2;
+      const focus = centerSlug && coords[centerSlug] ? [coords[centerSlug].lat, coords[centerSlug].lon] as [number, number] : defaultCenter;
+      const z = zoom ?? (centerSlug ? 4 : defaultZoom);
+      const map = new L.Map(container).setView(focus, z);
       // Dark basemap (CARTO Dark Matter)
       new L.TileLayer("https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png", {
         maxZoom: 20,
@@ -69,7 +79,11 @@ export default function PresenceMap() {
       }).addTo(map);
 
       // Add custom chip markers (rounded rectangular labels)
-      [...countries, ...cities].forEach((entity: any) => {
+      const allEntities: any[] = [...countries, ...cities];
+      const entities = Array.isArray(onlySlugs) && onlySlugs.length
+        ? allEntities.filter((e) => onlySlugs.includes(e.slug))
+        : allEntities;
+      entities.forEach((entity: any) => {
         const pos = coords[entity.slug];
         if (!pos) return;
         const href = entity.citizens ? `/cities/${entity.slug}` : `/countries/${entity.slug}`;

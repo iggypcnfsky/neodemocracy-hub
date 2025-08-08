@@ -5,6 +5,7 @@ import { Badge } from "../../../components/ui/badge";
 import { Users, FileText, MessageSquare, GitPullRequest, MapPin } from "lucide-react";
 import { findCity } from "../../../lib/geo-demo";
 import Breadcrumbs from "../../../components/breadcrumbs";
+import PresenceMap from "../../../components/presence-map";
 
 interface Props {
   params: { slug: string };
@@ -23,6 +24,13 @@ export default function CityPage({ params }: Props) {
       </div>
 
       <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+        <Card className="md:col-span-3">
+          <CardContent>
+            <div className="mt-4">
+              <PresenceMap centerSlug={city.slug} zoom={10} onlySlugs={[city.slug]} />
+            </div>
+          </CardContent>
+        </Card>
         <Card>
           <CardHeader>
             <CardTitle>Overview</CardTitle>

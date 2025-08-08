@@ -237,14 +237,61 @@ Recommend a monorepo for cohesive evolution and shared types.
 
 ## Frontend Prototype Status (Implemented)
 
-- Minimal GitHub-like dark UI using shadcn-style primitives (Button, Card, Input, Tabs, Badge).
-- Top navigation with icons and a compact “Create” menu (Policy Library, Issue, Proposal).
-- Explore views with tabs:
-  - Countries (default) and Cities first; rich cards per country/city with emoji flags, citizens, policies list, issues and proposals stats, and highlights.
-  - Policy list with richer cards showing location (city, country), activity badges, and links.
-  - Issues and Proposals lists show associated Policy and location (city, country); sort toggles: Latest / Trending.
-- Policy Library page with links to open issues and proposals; “Open Editor” button.
-- Policy Editor view: left folder tree, right text editor area with commit message and Save/Discard actions.
+### Tech & Design
+- Next.js App Router, React 19, Tailwind CSS v4 (dark-only shell).
+- shadcn-style primitives implemented locally: `Button`, `Input`, `Textarea`, `Card` (+Header/Content/Footer), `Badge`, `Tabs`.
+- Icons: `lucide-react`. Graph canvas: `reactflow`.
+- Global UI: sticky dark top nav with icons, compact Create dropdown, search input.
 
-Notes:
-- Data is demo-only (static) to illustrate UX. Wiring to GraphQL/REST is a next milestone.
+### Navigation & IA
+- Top nav links: Policy, Issues, Proposals, Governance (Governance removed from Explore tabs but present in nav).
+- Explore tabs (in order): Countries (default), Cities, Policy, Issues, Proposals. Each tab supports rich previews and sorting (Latest/Trending) where applicable.
+- Breadcrumbs component shows hierarchical context on all pages (Countries → City → Policy → Issue/Proposal/Editor), including emoji flags.
+
+### Routes (user-facing)
+- Explore: `/`
+  - Tabs: Countries, Cities, Policy, Issues, Proposals
+  - Sorting control on Policy/Issues/Proposals (Latest/Trending)
+- Countries: `/countries/[slug]`
+- Cities: `/cities/[slug]`
+- Policy library (profile): `/libraries/[org]/[repo]`
+- Policy editor: `/libraries/[org]/[repo]/editor`
+- Issues: list `/issues`, detail `/issues/[id]`, new `/issues/new`
+- Proposals: list `/proposals`, detail `/proposals/[id]`, new `/proposals/new`
+- New Policy Library: `/libraries/new`
+
+### Explore Content
+- Countries (default tab): cards with flag, citizens, counts (policies/issues/proposals), policy links, recent issues/proposals, and chips listing cities. Clicking country opens `/countries/[slug]`; city chips open `/cities/[slug]`.
+- Cities: similar card structure with city-level citizens and links to policy/issue/proposal detail pages.
+- Policy: cards show org/repo, visibility, stars/forks/updated, location (city, country), open issues and recent proposals (all clickable), and an Open button.
+- Issues/Proposals: list items include title, branches (for proposals), associated Policy link, and city/country.
+
+### Policy Library Profile (`/libraries/[org]/[repo]`)
+- Left: Files tree (links into Editor). Center: README preview (frontmatter-style summary).
+- Right: Open Issues and Open Proposals cards.
+- Systemic Lens: interactive canvas (React Flow) showing current policy centered, with related country-level (complementary) and city-level (operational) policies as nodes; nodes link to their pages.
+- Impact sections:
+  - Who will it impact: simple percentage bars for affected groups (transit riders, night shift workers, etc.).
+  - Financial Impact: CapEx/OpEx summaries, 5-year projection, and annual stacked bars with legend and notes.
+  - Contributors: grid of people cards with initials avatar, role, and activity stats.
+
+### Policy Editor (`/libraries/[org]/[repo]/editor`)
+- Left: folder tree (README, governance, policies/*, impact/*, metrics/*, drafts/*, attachments/*).
+- Right: text editor (demo) with per-file state, commit message input, Save/Discard actions.
+- Breadcrumbs include Editor as the last segment.
+
+### Entity Profiles
+- Country profile: overview stats, policies list, recent issues/proposals, cities list (links to city pages).
+- City profile: overview (citizens, country link, policy count), policies list, recent issues/proposals.
+- Issue/Proposal detail: title, status badges, policy link, city/country context, timeline/checks (proposal), with full breadcrumbs.
+
+### Data & Demo Layer
+- Static demo data in `src/lib/geo-demo.ts` for countries, cities, policies, issues, proposals.
+- Helpers: `getPolicyContext(org, repo)`, `findIssueContext(id)`, `findProposalContext(id)` to derive breadcrumb/location context.
+
+### Known Gaps / Next Milestones
+- Replace demo data with GraphQL-backed queries; thread auth context.
+- Real markdown rendering for README/policies; split-pane preview in editor.
+- Edge metadata on Systemic Lens (labels, types, arrows); persist relationships.
+- Search & filters (topics/tags) across Explore tabs; deep linking for sort/filter state.
+- RBAC and RLS-aligned UI states (visibility, actions) after backend wiring.

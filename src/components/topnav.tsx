@@ -8,9 +8,10 @@ import { Button } from "../components/ui/button";
 import { Library, GitPullRequest, Scale, Search, Plus, LayoutGrid, ChevronDown } from "lucide-react";
 
 const links = [
-  { href: "/", label: "Policy", icon: LayoutGrid },
-  { href: "/issues", label: "Issues", icon: GitPullRequest },
-  { href: "/proposals", label: "Proposals", icon: Library },
+  { href: "/", label: "Countries", icon: LayoutGrid },
+  { href: "/?tab=cities", label: "Cities", icon: LayoutGrid },
+  { href: "/?tab=repos&sort=latest", label: "Latest", icon: GitPullRequest },
+  { href: "/?tab=repos&sort=trending", label: "Trending", icon: Library },
   { href: "/governance", label: "Governance", icon: Scale },
 ];
 
@@ -66,31 +67,6 @@ export default function TopNav() {
           <Input placeholder="Search..." aria-label="Search" />
         </div>
         <div className="flex items-center gap-2" ref={menuRef}>
-          <Button
-            variant="secondary"
-            size="sm"
-            aria-haspopup="menu"
-            aria-expanded={openCreate}
-            onClick={() => setOpenCreate((v) => !v)}
-          >
-            <Plus className="h-4 w-4 mr-1" /> Create <ChevronDown className="ml-1 h-3 w-3" />
-          </Button>
-          {openCreate && (
-            <div
-              role="menu"
-              className="absolute right-4 top-12 w-48 rounded-md border border-neutral-800 bg-neutral-950 shadow-lg"
-            >
-              <Link href="/libraries/new" className="block px-3 py-2 text-sm text-neutral-200 hover:bg-neutral-900" role="menuitem">
-                New Policy Library
-              </Link>
-              <Link href="/issues/new" className="block px-3 py-2 text-sm text-neutral-200 hover:bg-neutral-900" role="menuitem">
-                New Issue
-              </Link>
-              <Link href="/proposals/new" className="block px-3 py-2 text-sm text-neutral-200 hover:bg-neutral-900" role="menuitem">
-                New Proposal
-              </Link>
-            </div>
-          )}
           <Button variant="ghost" size="sm" aria-label="Profile">⚙︎</Button>
         </div>
       </div>

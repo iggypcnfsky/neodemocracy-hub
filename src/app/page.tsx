@@ -7,6 +7,7 @@ import { Card, CardContent, CardHeader, CardTitle, CardFooter } from "../compone
 import { Badge } from "../components/ui/badge";
 import { Button } from "../components/ui/button";
 import { GitPullRequest, MessageSquare, Users, FileText, MapPin } from "lucide-react";
+import PresenceMap from "../components/presence-map";
 
 export default function Home() {
   const [tab, setTab] = useState("countries");
@@ -14,20 +15,10 @@ export default function Home() {
 
   return (
     <div className="space-y-6">
+      <PresenceMap />
       <div className="flex items-center justify-between">
         <h1 className="text-lg font-semibold text-neutral-100">Explore</h1>
-        <div className="flex items-center gap-2">
-          <Button size="sm" variant="outline">New Organization</Button>
-          <Link href="/libraries/new"><Button size="sm">New Library</Button></Link>
-        </div>
-      </div>
-      <div className="grid grid-cols-2 md:grid-cols-4 gap-3 text-center">
-        {[{k:"Policies",v:3},{k:"Issues",v:12},{k:"Proposals",v:5},{k:"Organizations",v:2}].map(({k,v})=> (
-          <div key={k} className="rounded-md border border-neutral-800 bg-neutral-950/60 p-3">
-            <div className="text-xs text-neutral-400">{k}</div>
-            <div className="text-lg font-semibold text-neutral-100">{v}</div>
-          </div>
-        ))}
+        <div />
       </div>
       <Tabs
         tabs={[

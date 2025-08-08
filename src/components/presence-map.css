@@ -1,0 +1,62 @@
+.leaflet-container .leaflet-popup-content-wrapper,
+.leaflet-container .leaflet-popup-tip {
+  background: #0f0f10;
+  color: #e5e7eb;
+  border-radius: 10px;
+  border: 1px solid #262626;
+}
+
+.leaflet-container .leaflet-control-zoom a {
+  background: #0f0f10;
+  color: #e5e7eb;
+  border: 1px solid #262626;
+  border-radius: 8px;
+}
+
+.leaflet-container .leaflet-control-attribution {
+  background: rgba(10,10,10,0.6);
+  color: #9ca3af;
+}
+
+/* Chip marker styles */
+.nd-chip-marker-wrapper {
+  /* reset Leaflet default icon box */
+  background: transparent !important;
+  border: none !important;
+  width: auto !important;
+  height: auto !important;
+  box-shadow: none !important;
+}
+
+.nd-chip-marker {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 6px 10px;
+  background: #0f0f10;
+  color: #e5e7eb;
+  border: 1px solid #262626;
+  border-radius: 10px;
+  text-decoration: none;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.35);
+  backdrop-filter: saturate(120%);
+  font-size: 12px;
+  line-height: 1;
+  cursor: pointer;
+}
+
+.nd-chip-marker .emoji {
+  font-size: 14px;
+}
+
+.nd-chip-marker .label {
+  white-space: nowrap;
+}
+
+/* Remove default DivIcon look globally (fallback) */
+.leaflet-div-icon {
+  background: transparent;
+  border: none;
+}
+
+
